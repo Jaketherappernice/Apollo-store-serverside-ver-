@@ -1,0 +1,101 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apollo Admin Panel</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: sans-serif;
+    }
+    .orange {
+      color: orange;
+    }
+    .white {
+      color: white;
+    }
+    hr {
+      background-color: orange;
+      border: 2px solid orange;
+    }
+    .boxed {
+      background-color: transparent;
+      border: 1px solid orange;
+      border-radius: 10px;
+      width: 350px;
+      padding: 10px;
+      margin: 20px auto;
+    }
+    textarea {
+      width: 90%;
+      margin: 5px auto;
+      height: 35px;
+      display: block;
+      border-radius: 5px;
+      padding: 5px;
+      font-family: sans-serif;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: orange;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;
+      margin: 10px auto;
+    }
+  </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyALTQFYom_e3oLaxqNuz6fXu9-PvCQmO40",
+      authDomain: "apollo-sell-2ceeb.firebaseapp.com",
+      databaseURL: "https://apollo-sell-2ceeb-default-rtdb.firebaseio.com",
+      projectId: "apollo-sell-2ceeb",
+      storageBucket: "apollo-sell-2ceeb.firebasestorage.app",
+      messagingSenderId: "472038367975",
+      appId: "1:472038367975:web:1ca15f3e96d4c23582f842"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  </script>
+</head>
+<body>
+  <header>
+    <h1><span class="orange">Apollo</span><br><span class="white">Admin Panel</span></h1>
+    <hr>
+  </header>
+  <div class="boxed">
+    <h2>Add Product</h2>
+    <textarea id="title" placeholder="Product Title"></textarea>
+    <textarea id="description" placeholder="Product Description"></textarea>
+    <textarea id="image" placeholder="Product Image Link"></textarea>
+    <textarea id="link" placeholder="Product Payment Link"></textarea>
+    <button class="button" onclick="addProduct()">Add Product</button>
+  </div>
+  <script>
+    function addProduct() {
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const image_url = document.getElementById("image").value;
+      const payment_link = document.getElementById("link").value;if (!title || !image_url || !payment_link) {
+    return alert("Please fill in at least title, image, and payment link.");
+  }
+
+  db.ref("products").push({ title, description, image_url, payment_link });
+  alert("Product added successfully!");
+
+  document.getElementById("title").value = "";
+  document.getElementById("description").value = "";
+  document.getElementById("image").value = "";
+  document.getElementById("link").value = "";
+}
+
+  </script>
+</body>
+</html>

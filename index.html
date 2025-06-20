@@ -1,0 +1,122 @@
+<!-- index.html --><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apollo Store Homepage</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: sans-serif;
+    }
+    .hr {
+      border: none;
+      background-color: orange;
+      height: 3px;
+    }
+    .orange {
+      color: orange;
+    }
+    .white {
+      color: white;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: orange;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;
+      margin: 20px auto;
+    }
+    .boxed {
+      background-color: transparent;
+      color: orange;
+      border: 2px solid orange;
+      width: 130px;
+      height: 300px;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
+    }
+    .product-image1 {
+      width: 127px;
+      height: 150px;
+      object-fit: cover;
+      border: 2px solid white;
+      margin-bottom: 10px;
+    }
+    .button1 {
+      padding: 10px 20px;
+      background-color: orange;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .products-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyALTQFYom_e3oLaxqNuz6fXu9-PvCQmO40",
+      authDomain: "apollo-sell-2ceeb.firebaseapp.com",
+      databaseURL: "https://apollo-sell-2ceeb-default-rtdb.firebaseio.com",
+      projectId: "apollo-sell-2ceeb",
+      storageBucket: "apollo-sell-2ceeb.firebasestorage.app",
+      messagingSenderId: "472038367975",
+      appId: "1:472038367975:web:1ca15f3e96d4c23582f842"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  </script>
+</head>
+<body>
+  <header>
+    <h1 style="text-align: center;">
+      <span class="orange" style="font-size: 50px;">Apollo</span><br />
+      <span class="white" style="font-size: 45px;">Store</span>
+    </h1>
+  </header>
+  <button class="button" onclick="login()">Login as Admin</button>
+  <hr class="hr" />
+  <h1 style="text-align: center;">Products</h1>
+  <div class="products-container" id="product-list"></div>
+  <script>
+    function login() {
+      const pass = prompt("Enter admin password:");
+      if (pass === "SebJacob03") {
+        window.location.href = "admin.html";
+      } else {
+        alert("Wrong password!");
+      }
+    }db.ref("products").on("value", snapshot => {
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  snapshot.forEach(child => {
+    const p = child.val();
+    const div = document.createElement("div");
+    div.className = "boxed";
+    div.innerHTML = `
+      <h2 style="font-size: 18px;">${p.title}</h2>
+      <img src="${p.image_url}" class="product-image1">
+      <br>
+      <button class="button1" onclick="window.location.href='${p.payment_link}'">Buy Product</button>
+    `;
+    list.appendChild(div);
+  });
+});
+
+  </script>
+</body>
+</html>
