@@ -1,6 +1,6 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
+<!-- admin.html --><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apollo Admin Panel</title>
   <style>
@@ -17,26 +17,37 @@
     }
     hr {
       background-color: orange;
+      color: orange;
       border: 2px solid orange;
     }
     .boxed {
       background-color: transparent;
+      color: white;
       border: 1px solid orange;
       border-radius: 10px;
       width: 350px;
+      height: auto;
       padding: 10px;
-      margin: 20px auto;
+      margin: 10px auto;
     }
-    textarea {
-      width: 90%;
-      margin: 5px auto;
-      height: 35px;
-      display: block;
-      border-radius: 5px;
-      padding: 5px;
-      font-family: sans-serif;
+    .boxed1 {
+      background-color: transparent;
+      color: orange;
+      border: 2px solid orange;
+      width: 130px;
+      height: auto;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
     }
-    .button {
+    .product-image1 {
+      width: 127px;
+      height: 150px;
+      object-fit: cover;
+      border: 2px solid white;
+      margin-bottom: 10px;
+    }
+    .button, .button1 {
       padding: 10px 20px;
       background-color: orange;
       color: black;
@@ -44,11 +55,19 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
+      margin: 5px;
+    }
+    textarea {
+      width: 95%;
+      margin: 5px auto;
       display: block;
-      margin: 10px auto;
+    }
+    .products-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
   </style>
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script>
@@ -67,33 +86,68 @@
 </head>
 <body>
   <header>
-    <h1><span class="orange">Apollo</span><br><span class="white">Admin Panel</span></h1>
+    <h1><span class="orange">Apollo</span><br><span class="white">Admin panel</span></h1>
     <hr>
+    <div class="boxed">
+      <h2>Add Product</h2>
+      <textarea id="title" placeholder="Product title"></textarea>
+      <textarea id="desc" placeholder="Product description (optional)"></textarea>
+      <textarea id="img" placeholder="Product image link/url"></textarea>
+      <textarea id="pay" placeholder="Product payment link"></textarea>
+      <button class="button" onclick="addProduct()">Add Product</button>
+    </div>
+    <h1 style="text-align: center;">Products</h1>
+    <div class="products-container" id="product-list"></div>
   </header>
-  <div class="boxed">
-    <h2>Add Product</h2>
-    <textarea id="title" placeholder="Product Title"></textarea>
-    <textarea id="description" placeholder="Product Description"></textarea>
-    <textarea id="image" placeholder="Product Image Link"></textarea>
-    <textarea id="link" placeholder="Product Payment Link"></textarea>
-    <button class="button" onclick="addProduct()">Add Product</button>
-  </div>
   <script>
     function addProduct() {
       const title = document.getElementById("title").value;
-      const description = document.getElementById("description").value;
-      const image_url = document.getElementById("image").value;
-      const payment_link = document.getElementById("link").value;if (!title || !image_url || !payment_link) {
-    return alert("Please fill in at least title, image, and payment link.");
+      const description = document.getElementById("desc").value;
+      const image_url = document.getElementById("img").value;
+      const payment_link = document.getElementById("pay").value;
+      if (!title || !image_url || !payment_link) return alert("Fill required fields");
+      const newProduct = { title, description, image_url, payment_link };
+      db.ref("products").push(newProduct);
+      alert("Product added!");
+    }db.ref("products").on("value", snapshot => {
+  const list = document.getElementById("product-list");
+  list.innerHTML = "";
+  snapshot.forEach(child => {
+    const id = child.key;
+    const p = child.val();
+    const div = document.createElement("div");
+    div.className = "boxed1";
+    div.innerHTML = `
+      <h2 style="font-size: 18px;">${p.title}</h2>
+      <img src="${p.image_url}" alt="Product Image" class="product-image1">
+      <br>
+      <button class="button1" onclick="deleteProduct('${id}')">Delete Product</button>
+      <button class="button1" onclick="editProduct('${id}', '${p.title}', '${p.description}', '${p.image_url}', '${p.payment_link}')">Edit Product</button>
+    `;
+    list.appendChild(div);
+  });
+});
+
+function deleteProduct(id) {
+  if (confirm("Delete this product?")) {
+    db.ref("products/" + id).remove();
   }
+}
 
-  db.ref("products").push({ title, description, image_url, payment_link });
-  alert("Product added successfully!");
+function editProduct(id, title, desc, img, link) {
+  const newTitle = prompt("New title:", title);
+  const newDesc = prompt("New description:", desc);
+  const newImg = prompt("New image URL:", img);
+  const newLink = prompt("New payment link:", link);
 
-  document.getElementById("title").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("image").value = "";
-  document.getElementById("link").value = "";
+  if (newTitle && newImg && newLink) {
+    db.ref("products/" + id).update({
+      title: newTitle,
+      description: newDesc,
+      image_url: newImg,
+      payment_link: newLink
+    });
+  }
 }
 
   </script>
