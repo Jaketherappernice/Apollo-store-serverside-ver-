@@ -36,7 +36,7 @@
       color: orange;
       border: 2px solid orange;
       width: 130px;
-      height: 300px;
+      height: auto;
       padding: 10px;
       margin: 10px;
       text-align: center;
@@ -56,7 +56,7 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 14px;
-      margin-top: 10px;
+      margin: 5px;
     }
     .products-container {
       display: flex;
@@ -96,6 +96,7 @@
     function login() {
       const pass = prompt("Enter admin password:");
       if (pass === "SebJacob03") {
+        localStorage.setItem("isAdmin", "true");
         window.location.href = "admin.html";
       } else {
         alert("Wrong password!");
@@ -104,6 +105,7 @@
   const list = document.getElementById("product-list");
   list.innerHTML = "";
   snapshot.forEach(child => {
+    const id = child.key;
     const p = child.val();
     const div = document.createElement("div");
     div.className = "boxed";
@@ -112,9 +114,64 @@
       <img src="${p.image_url}" class="product-image1">
       <br>
       <button class="button1" onclick="window.location.href='${p.payment_link}'">Buy Product</button>
+      <button class="button1" data-id="${id}" data-role="delete">Delete</button>
+      <button class="button1" data-id="${id}" data-role="edit">Edit</button>
     `;
     list.appendChild(div);
   });
+});
+
+function deleteProduct(id) {
+  if (confirm("Delete this product?")) {
+    db.ref("products/" + id).remove();
+  }
+}
+
+function editProduct(id, title, desc, img, link) {
+  const newTitle = prompt("New title:", title);
+  const newDesc = prompt("New description:", desc);
+  const newImg = prompt("New image URL:", img);
+  const newLink = prompt("New payment link:", link);
+
+  if (newTitle && newImg && newLink) {
+    db.ref("products/" + id).update({
+      title: newTitle,
+      description: newDesc,
+      image_url: newImg,
+      payment_link: newLink
+    });
+  }
+}
+
+document.addEventListener("click", function (e) {
+  if (e.target.matches("[data-role='delete']")) {
+    const id = e.target.getAttribute("data-id");
+    deleteProduct(id);
+  }
+  if (e.target.matches("[data-role='edit']")) {
+    const id = e.target.getAttribute("data-id");
+    const box = e.target.closest(".boxed");
+    const title = box.querySelector("h2").innerText;
+    const img = box.querySelector("img").src;
+    const link = box.querySelector("button").onclick.toString().match(/'(.*?)'/)[1];
+    editProduct(id, title, '', img, link);
+  }
+});
+
+const isAdmin = localStorage.getItem("isAdmin") === "true";
+const observer = new MutationObserver(() => {
+  if (!isAdmin) {
+    document.querySelectorAll(".button1").forEach(btn => {
+      if (btn.textContent.includes("Delete") || btn.textContent.includes("Edit")) {
+        btn.style.display = "none";
+      }
+    });
+  }
+});
+
+observer.observe(document.getElementById("product-list"), {
+  childList: true,
+  subtree: true
 });
 
   </script>
