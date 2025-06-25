@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Apollo Store Homepage</title>
   <style>
     body {
@@ -42,6 +42,11 @@
       padding: 10px;
       margin: 10px;
       text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .boxed:hover {
+      transform: scale(1.02);
     }
     .product-image1 {
       width: 277px;
@@ -49,16 +54,6 @@
       object-fit: cover;
       border: 2px solid white;
       margin-bottom: 10px;
-    }
-    .button1 {
-      padding: 10px 20px;
-      background-color: orange;
-      color: black;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      margin: 5px;
     }
     .products-container {
       display: flex;
@@ -102,7 +97,7 @@
     </h1>
   </header>
 
-  <button class="button" onclick="login()"></button>
+  <button class="button" onclick="login()">Admin Login</button>
   <hr class="hr" />
 
   <input type="text" class="search-box" placeholder="Search products..." onkeyup="filterProducts(this.value)" />
@@ -138,11 +133,20 @@
         const div = document.createElement("div");
         div.className = "boxed";
         div.setAttribute("data-title", p.title.toLowerCase());
+        div.onclick = () => {
+          const data = {
+            id,
+            title: p.title,
+            description: p.description || "No description provided.",
+            image_url: p.image_url,
+            payment_link: p.payment_link
+          };
+          localStorage.setItem("selectedProduct", JSON.stringify(data));
+          window.location.href = "product.html";
+        };
         div.innerHTML = `
           <h2 style="font-size: 18px;">${p.title}</h2>
           <img src="${p.image_url}" class="product-image1">
-          <br>
-          <button class="button1" onclick="window.location.href='${p.payment_link}'">Buy Product</button>
         `;
         list.appendChild(div);
       });
@@ -156,59 +160,6 @@
         box.style.display = title.includes(lower) ? "block" : "none";
       });
     }
-
-    function deleteProduct(id) {
-      if (confirm("Delete this product?")) {
-        db.ref("products/" + id).remove();
-      }
-    }
-
-    function editProduct(id, title, desc, img, link) {
-      const newTitle = prompt("New title:", title);
-      const newDesc = prompt("New description:", desc);
-      const newImg = prompt("New image URL:", img);
-      const newLink = prompt("New payment link:", link);
-
-      if (newTitle && newImg && newLink) {
-        db.ref("products/" + id).update({
-          title: newTitle,
-          description: newDesc,
-          image_url: newImg,
-          payment_link: newLink
-        });
-      }
-    }
-
-    document.addEventListener("click", function (e) {
-      if (e.target.matches("[data-role='delete']")) {
-        const id = e.target.getAttribute("data-id");
-        deleteProduct(id);
-      }
-      if (e.target.matches("[data-role='edit']")) {
-        const id = e.target.getAttribute("data-id");
-        const box = e.target.closest(".boxed");
-        const title = box.querySelector("h2").innerText;
-        const img = box.querySelector("img").src;
-        const link = box.querySelector("button").onclick.toString().match(/'(.*?)'/)[1];
-        editProduct(id, title, '', img, link);
-      }
-    });
-
-    const isAdmin = localStorage.getItem("isAdmin") === "true";
-    const observer = new MutationObserver(() => {
-      if (!isAdmin) {
-        document.querySelectorAll(".button1").forEach(btn => {
-          if (btn.textContent.includes("Delete") || btn.textContent.includes("Edit")) {
-            btn.style.display = "none";
-          }
-        });
-      }
-    });
-
-    observer.observe(document.getElementById("product-list"), {
-      childList: true,
-      subtree: true
-    });
   </script>
 </body>
 </html>
