@@ -4,69 +4,128 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apollo Admin Panel</title>
   <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: sans-serif;
-    }
-    .orange {
-      color: orange;
-    }
-    .white {
-      color: white;
-    }
-    hr {
-      background-color: orange;
-      color: orange;
-      border: 2px solid orange;
-    }
-    .boxed {
-      background-color: transparent;
-      color: white;
-      border: 1px solid orange;
-      border-radius: 10px;
-      width: 350px;
-      height: auto;
-      padding: 10px;
-      margin: 10px auto;
-    }
-    .boxed1 {
-      background-color: transparent;
-      color: orange;
-      border: 2px solid orange;
-      width: 130px;
-      height: auto;
-      padding: 10px;
-      margin: 10px;
-      text-align: center;
-    }
-    .product-image1 {
-      width: 127px;
-      height: 150px;
-      object-fit: cover;
-      border: 2px solid white;
-      margin-bottom: 10px;
-    }
-    .button, .button1 {
-      padding: 10px 20px;
-      background-color: orange;
-      color: black;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin: 5px;
-    }
-    textarea {
-      width: 95%;
-      margin: 5px auto;
-      display: block;
-    }
-    .products-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+     /* Apollo Admin Panel – Animated Dark Purple Gradient */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #f0f0f0;
+  background: linear-gradient(-45deg, #1a0033, #0d001a, #220044, #13022e, #0e153a);
+  background-size: 400% 400%;
+  animation: gradientBG 25s ease infinite;
+}
+
+/* Animated Gradient Keyframes */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.orange {
+  color: #ff9800;
+}
+
+.white {
+  color: #ffffff;
+}
+
+hr {
+  background: linear-gradient(to right, #d500f9, #7c4dff);
+  height: 3px;
+  border: none;
+  margin: 20px auto;
+  width: 90%;
+  border-radius: 10px;
+}
+
+/* Form Box */
+.boxed {
+  background-color: #221133cc;
+  border: 1px solid #9c27b0;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 500px;
+  color: #ffe0b2;
+  box-shadow: 0 0 20px rgba(103, 58, 183, 0.3);
+}
+
+/* Product Card */
+.boxed1 {
+  background-color: #2b1a40dd;
+  color: #e0e0e0;
+  border: 1px solid #ab47bc;
+  border-radius: 14px;
+  width: 260px;
+  margin: 15px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(156, 39, 176, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.boxed1:hover {
+  transform: translateY(-5px);
+}
+
+/* Product Image */
+.product-image1 {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #ffffff22;
+  margin-bottom: 10px;
+  transition: transform 0.2s ease;
+}
+
+.product-image1:hover {
+  transform: scale(1.05);
+}
+
+/* Buttons */
+.button, .button1 {
+  padding: 10px 18px;
+  background: linear-gradient(to right, #d500f9, #7c4dff);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 8px 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover, .button1:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #ba68c8;
+}
+
+/* Textareas */
+textarea {
+  width: 95%;
+  margin: 8px auto;
+  display: block;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #8e24aa;
+  background-color: #1e1b2e;
+  color: white;
+  resize: vertical;
+}
+
+/* Product Grid */
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
