@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Product Details</title>
   <style>
-     body {
+    body {
       background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
       color: #f0e6ff;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -61,28 +61,74 @@
       padding: 20px;
       backdrop-filter: blur(10px);
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-      }
+    }
   </style>
 </head>
 <body>
   <h1 id="product-title"></h1>
   <img id="product-image" src="" alt="Product image"/>
-  <div class="desc" id="product-description"></div>
+  
+  <div class="desc" id="product-description"> </div>
 <button class="buy-btn" id="buy-button">Buy Now</button>
 <button class="buy-btn" style="background-color: orange; margin-top: 10px;" onclick="addToCart()">Add to Cart</button>
 
   <script>
+  try {
     const product = JSON.parse(localStorage.getItem("selectedProduct"));
+
     if (!product) {
+      console.error("[Apollo] No product found in localStorage.");
       document.body.innerHTML = "<h2 style='color:red;'>No product selected.</h2>";
     } else {
-      document.getElementById("product-title").textContent = product.title;
-      document.getElementById("product-image").src = product.image_url;
-      document.getElementById("product-description").textContent = product.description;
+      console.log("[Apollo] Loaded product:", product);
+      document.getElementById("product-title").textContent = product.title || "Untitled";
+      document.getElementById("product-image").src = product.image_url || "";
+      document.getElementById("product-description").textContent = product.description || "No description provided.";
       document.getElementById("buy-button").onclick = () => {
-        window.location.href = product.payment_link;
+        if (product.payment_link) {
+          window.location.href = product.payment_link;
+        } else {
+          alert("No payment link available.");
+        }
       };
     }
+  } catch (e) {
+    console.error("[Apollo] Error parsing product from localStorage:", e);
+    document.body.innerHTML = "<h2 style='color:red;'>Failed to load product.</h2>";
+  }
+</script>
+
+<script>
+  function addToCart() {
+    try {
+      const product = JSON.parse(localStorage.getItem("selectedProduct"));
+      if (!product) return alert("No product loaded.");
+
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+      const exists = cart.find(item =>
+        item.title === product.title &&
+        item.image_url === product.image_url
+      );
+
+      if (exists) {
+        alert("This product is already in your cart.");
+        return;
+      }
+
+      cart.push({
+        title: product.title,
+        image_url: product.image_url,
+        payment_link: product.payment_link
+      });
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert("Product added to cart!");
+    } catch (e) {
+      console.error("[Apollo] Error adding to cart:", e);
+      alert("Something went wrong when adding to cart.");
+    }
+  }
   </script>
   <script>
   function addToCart() {
