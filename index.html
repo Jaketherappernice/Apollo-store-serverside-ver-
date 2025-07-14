@@ -6,15 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Apollo Store Homepage</title>
   <style>
-/* Improved Accessible CSS for Apollo Store */
+    /* Improved CSS Theme */
+/* Redesigned Dark Theme CSS with Purple Gradient */
 
 body {
   background: linear-gradient(to right, #1a0033, #0d001a);
   color: #e0e0e0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
-  line-height: 1.6;
 }
 
 /* Header line */
@@ -22,8 +22,8 @@ body {
   border: none;
   height: 2px;
   background: linear-gradient(to right, #d500f9, #7c4dff);
-  margin: 16px auto;
-  width: 90%;
+  margin: 20px auto;
+  width: 80%;
 }
 
 /* Text Color Utility */
@@ -35,78 +35,76 @@ body {
   color: #ffffff;
 }
 
+/* Buttons */
 .button {
-  padding: 12px;
+  padding: 10px 25px;
   background: linear-gradient(to right, #d500f9, #7c4dff);
   color: white;
   border: none;
-  border-radius: 100px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 108px; /* 👈 Make this larger for a bigger emoji */
+  font-size: 16px;
   font-weight: bold;
+  margin: 10px 5px;
   transition: all 0.2s ease-in-out;
-  width: 70px;
-  height: 70px;
-  position: fixed;
-  right: 30px;
-  bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  box-shadow: 0 0 12px rgba(103, 58, 183, 0.4);
-}
-
-.button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 18px rgba(186, 104, 200, 0.5);
-}
-.buttonadmin {
-  padding: 8px 18px;
-  background: linear-gradient(to right, #d500f9, #7c4dff);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  margin: 9px 4px;
-  transition: all 0.2s ease-in-out;
-  position: absolute;
-  right: 300px;
-  top: 230px;
 }
 
 .button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 12px #aa00ff;
+  box-shadow: 0 0 15px #aa00ff;
 }
 
-/* Fixed Cart Button */
-#floating-cart-btn {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  background: linear-gradient(to right, #d500f9, #7c4dff);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  padding: 12px 16px;
-  font-size: 18px;
-  box-shadow: 0 0 10px rgba(186, 104, 200, 0.6);
-  z-index: 10000;
+/* Product Grid Container */
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Product Box */
+.boxed {
+  background-color: #1b1b2f;
+  border: 1px solid #673ab7;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(103, 58, 183, 0.2);
   cursor: pointer;
+}
+
+.boxed:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(186, 104, 200, 0.3);
+}
+
+/* Product Image */
+.product-image1 {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #ffffff15;
+  margin-bottom: 15px;
+  transition: transform 0.2s ease;
+}
+
+.product-image1:hover {
+  transform: scale(1.05);
 }
 
 /* Search Box */
 .search-box {
   display: block;
-  margin: 20px auto;
-  padding: 12px 16px;
-  width: 85%;
-  max-width: 380px;
-  font-size: 15px;
-  border-radius: 8px;
+  margin: 30px auto 20px auto;
+  padding: 14px 18px;
+  width: 90%;
+  max-width: 400px;
+  font-size: 16px;
+  border-radius: 10px;
   border: 1px solid #9c27b0;
   background-color: #2e2b3f;
   color: white;
@@ -119,48 +117,6 @@ body {
   box-shadow: 0 0 10px #ab47bc88;
 }
 
-/* Product Grid Container */
-.products-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-}
-
-/* Product Box */
-.boxed {
-  background-color: #1b1b2f;
-  border: 1px solid #7e57c2;
-  border-radius: 12px;
-  padding: 14px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 3px 8px rgba(103, 58, 183, 0.2);
-  cursor: pointer;
-}
-
-.boxed:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(186, 104, 200, 0.3);
-}
-
-/* Product Image */
-.product-image1 {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 2px solid #ffffff15;
-  margin-bottom: 12px;
-  transition: transform 0.2s ease;
-}
-
-.product-image1:hover {
-  transform: scale(1.04);
-}
-
 /* Cart Modal */
 #cart-modal {
   background: #1e1e2f;
@@ -168,36 +124,6 @@ body {
   border-radius: 14px;
   box-shadow: 0 0 20px rgba(156, 39, 176, 0.3);
   border: 2px solid #9c27b0;
-  padding: 20px;
-  max-width: 90%;
-}
-
-/* Responsive Text */
-h1, h2, h3 {
-  margin: 0.5em 0;
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-h2 {
-  font-size: 1.3rem;
-}
-
-@media (max-width: 500px) {
-  .boxed {
-    padding: 10px;
-  }
-
-  .product-image1 {
-    height: 120px;
-  }
-
-  .button {
-    font-size: 13px;
-    padding: 6px 14px;
-  }
 }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -227,8 +153,8 @@ h2 {
   </header>
 
   <div style="text-align: center;">
-	<button class="buttonadmin" onclick="login()"></button>
-	<button class="button" onclick="toggleCart()">Cart(<span id="cart-count">0</span>)</button>
+	<button class="button" onclick="login()"></button>
+	<button class="button" onclick="toggleCart()">🛒 View Cart (<span id="cart-count">0</span>)</button>
 </div>
   <hr class="hr" />
 
@@ -240,18 +166,18 @@ h2 {
 
 	<!-- Cart Modal -->
 <div id="cart-modal" style="display:none; position:fixed; top:10%; left:10%; width:80%; max-height:80%; overflow-y:auto; background:#111; color:white; border:2px solid lightblue; padding:20px; z-index:9999;">
-  <h2>🛒 Cart</h2>
+  <h2>🛒 Your Cart</h2>
   <div id="cart-items"></div>
   <button onclick="toggleCart()" class="button">Close Cart</button>
 </div>
   <script>
     function login() {
-      const pass = prompt("Secret...");
+      const pass = prompt("Enter admin password:");
       if (pass === "rdMoUFt9D8m6Q80I02lk0146yM6v3w3IwoMFy1jLeB5gUC1fi4WlysCufW75EloS6EjJ4wOGJkLtDEvplVd1pi7jr35J4fpt1INiHo231d5j81qX9dvH43J0MA09qvP46H1LjJ2jHkyyi3rAB7wE9FMMKAtGMiCT6099M49h4UtS4Z9500t41ZnlvM6972LM5sHS0p5D08v37G15XtX1HxmibVUk91Ir8tqJ3yufbl1w8zQVblNsfW24n7074Ezh8H51bb99cV0ONX139e0TU6c68p4jkB32rawvl8s2X881steRhM8u1034OxuimkdFYBfOMoOJ0vcJA9z6vK57q2gB61Us2zh87rljCbQVZp953LryjdfLH5B987WrrNlO2E1UJN5d7ToTpd3P1LqoM6TKBJvPj2M12aySBWHoG2BgSyI3Ur51snU5kpEmyH8inT4Q0OY4D33A6h9RET5144h9V1Q1w2hYhod3O6y5VuZV8fn7UCEo") {
         localStorage.setItem("isAdmin", "true");
         window.location.href = "admin.html";
       } else {
-        alert("Wrong passw");
+        alert("Wrong password!");
       }
     }
 
